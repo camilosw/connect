@@ -1,0 +1,16 @@
+@import './normalize.css';
+/* @import url('https://fonts.googleapis.com/css?family=Archivo+Black&display=swap'); */
+@import url('https://fonts.googleapis.com/css?family=Archivo:300,400,700&display=swap');
+
+:root {
+  --blue: #1225dc;
+  --gray: #d8dfee;
+  --dark-gray: #2e2e41;
+}
+
+body {
+  background-color: var(--gray);
+  color: var(--dark-gray);
+  /* font-family: 'Archivo Black', sans-serif; */
+  font-family: 'Archivo', sans-serif;
+}
