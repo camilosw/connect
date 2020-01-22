@@ -12,42 +12,42 @@ const cn = css`
 const index = () => {
   return (
     <div className={cn.grid}>
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
-      <Cell />
+      <Cell shape={0b000101} />
+      <Cell shape={0b001010} />
+      <Cell shape={0b000011} />
+      <Cell shape={0b000111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b011111} />
+      <Cell shape={0b100001} />
+      <Cell shape={0b000110} />
+      <Cell shape={0b001100} />
+      <Cell shape={0b001001} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
+      <Cell shape={0b001111} />
     </div>
   );
 };
