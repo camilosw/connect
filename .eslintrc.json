@@ -32,7 +32,9 @@
     ],
     "arrow-body-style": "off",
     "import/prefer-default-export": "off",
-    "no-bitwise": "off"
+    "no-bitwise": "off",
+    "react/no-array-index-key": "off",
+    "no-debugger": "warn"
   },
   "settings": {
     "import/resolver": {

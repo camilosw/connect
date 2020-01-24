@@ -2,6 +2,8 @@ import React from 'react';
 import Cell from 'components/Cell';
 import { css } from 'astroturf';
 
+import generateMaze from 'helpers/generateMaze';
+
 const cn = css`
   .grid {
     display: grid;
@@ -9,47 +11,16 @@ const cn = css`
   }
 `;
 
-const index = () => {
+const Grid = () => {
+  const maze = generateMaze(6, 6);
+
   return (
     <div className={cn.grid}>
-      <Cell shape={0b000101} />
-      <Cell shape={0b001010} />
-      <Cell shape={0b000011} />
-      <Cell shape={0b000111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b011111} />
-      <Cell shape={0b100001} />
-      <Cell shape={0b000110} />
-      <Cell shape={0b001100} />
-      <Cell shape={0b001001} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
-      <Cell shape={0b001111} />
+      {maze.map((cell, index) => (
+        <Cell shape={cell} key={index} />
+      ))}
     </div>
   );
 };
 
-export default index;
+export default Grid;
