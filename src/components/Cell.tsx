@@ -65,6 +65,7 @@ const cn = css`
 
 interface Props {
   shape: number;
+  onClick: () => void;
 }
 
 const mapShape = (shape: number) => {
@@ -77,13 +78,13 @@ const mapShape = (shape: number) => {
   };
 };
 
-const Cell = ({ shape }: Props) => {
+const Cell = ({ shape, onClick }: Props) => {
   const { top, right, bottom, left, start } = mapShape(shape);
 
   const end = shape === 1 || shape === 2 || shape === 4 || shape === 8;
 
   return (
-    <div className={cn.cell}>
+    <div className={cn.cell} onClick={onClick}>
       {start && <div className={[cn.circle, cn.start].join(' ')} />}
       {end && <div className={[cn.circle, cn.end].join(' ')} />}
       {top && <div className={[cn.path, cn.pathTop].join(' ')} />}
