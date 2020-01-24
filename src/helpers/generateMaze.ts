@@ -1,9 +1,10 @@
+import randomInt from 'helpers/randomInt';
+
 interface Cell {
   x: number;
   y: number;
 }
 
-const randomInt = (n: number) => Math.floor(Math.random() * n);
 const randomizeList = <T>(list: T[]) =>
   list.slice().sort(() => Math.random() - 0.5);
 

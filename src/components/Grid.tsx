@@ -3,6 +3,7 @@ import Cell from 'components/Cell';
 import { css } from 'astroturf';
 
 import generateMaze from 'helpers/generateMaze';
+import randomInt from 'helpers/randomInt';
 
 const cn = css`
   .grid {
@@ -12,7 +13,12 @@ const cn = css`
 `;
 
 const Grid = () => {
-  const maze = generateMaze(6, 6);
+  const rows = 6;
+  const columns = 6;
+  const maze = generateMaze(rows, columns);
+  const row = randomInt(rows);
+  const column = randomInt(columns);
+  maze[column + row * columns] |= 0b10000;
 
   return (
     <div className={cn.grid}>

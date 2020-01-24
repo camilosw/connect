@@ -12,7 +12,7 @@ const cn = css`
     background-color: var(--blue);
   }
   .start {
-    --size: 1.75rem;
+    --size: 2rem;
   }
   .end {
     --size: 1.25rem;
@@ -74,12 +74,13 @@ const mapShape = (shape: number) => {
     bottom: !!(shape & 0x4),
     left: !!(shape & 0x8),
     start: !!(shape & 0x10),
-    end: !!(shape & 0x20),
   };
 };
 
 const Cell = ({ shape }: Props) => {
-  const { top, right, bottom, left, start, end } = mapShape(shape);
+  const { top, right, bottom, left, start } = mapShape(shape);
+
+  const end = shape === 1 || shape === 2 || shape === 4 || shape === 8;
 
   return (
     <div className={cn.cell}>
