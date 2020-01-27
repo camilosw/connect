@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import Cell from 'components/Cell';
+import Tile from 'components/Tile';
 import { css } from 'astroturf';
 
-import generateMaze from 'helpers/generateMaze';
-import randomInt from 'helpers/randomInt';
 import rotateCell from 'helpers/rotateCell';
+import { Maze } from 'types';
+import checkConnected from 'helpers/checkConnected';
+import { directionFlags, statusFlags } from 'helpers/maze';
 
 const cn = css`
   .grid {
@@ -13,30 +14,30 @@ const cn = css`
   }
 `;
 
-const Grid = () => {
-  const rows = 6;
-  const columns = 6;
-  const newMaze = generateMaze(rows, columns);
-  const rotatedMaze = newMaze.map(cell => rotateCell(cell, randomInt(4)));
+interface Props {
+  maze: Maze;
+}
 
-  const row = randomInt(rows);
-  const column = randomInt(columns);
-  rotatedMaze[column + row * columns] |= 0b10000;
-
-  const [maze, setMaze] = useState(rotatedMaze);
+const Grid = ({ maze }: Props) => {
+  const [cells, setCells] = useState(maze.cells);
 
   const handleClick = (index: number) => {
-    const changedMaze = maze.slice();
-    const cell = maze[index] & 0b1111;
-    const start = maze[index] & 0b10000;
-    changedMaze[index] = rotateCell(cell, 1) | start;
-    setMaze(changedMaze);
+    const changedCells = cells.slice();
+    const cell = cells[index] & directionFlags;
+    const otherFlags = cells[index] & statusFlags;
+    changedCells[index] = rotateCell(cell, 1) | otherFlags;
+
+    const { cells: connectedCells } = checkConnected({
+      ...maze,
+      cells: changedCells,
+    });
+    setCells(connectedCells);
   };
 
   return (
     <div className={cn.grid}>
-      {maze.map((cell, index) => (
-        <Cell shape={cell} key={index} onClick={() => handleClick(index)} />
+      {cells.map((cell, index) => (
+        <Tile cell={cell} key={index} onClick={() => handleClick(index)} />
       ))}
     </div>
   );

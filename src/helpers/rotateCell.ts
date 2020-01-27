@@ -1,2 +1,7 @@
-export default (cell: number, n: number) =>
-  ((cell << n) | (cell >> (4 - n))) & 0b1111;
+import { directionFlags, statusFlags } from 'helpers/maze';
+
+export default (cell: number, n: number) => {
+  const toRotate = cell & directionFlags;
+  const rotated = (toRotate << n) | (toRotate >> (4 - n));
+  return (rotated & directionFlags) | (cell & statusFlags);
+};

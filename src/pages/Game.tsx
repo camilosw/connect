@@ -2,6 +2,11 @@ import React from 'react';
 import Grid from 'components/Grid';
 import { css } from 'astroturf';
 
+import generateMaze from 'helpers/generateMaze';
+import randomInt from 'helpers/randomInt';
+import rotateCell from 'helpers/rotateCell';
+import checkConnections from 'helpers/checkConnected';
+
 const cn = css`
   .game {
     flex: 1;
@@ -39,6 +44,11 @@ const cn = css`
 `;
 
 const Game = () => {
+  const maze = generateMaze(6, 6);
+  const rotatedCells = maze.cells.map(cell => rotateCell(cell, randomInt(4)));
+  const rotatedMaze = { ...maze, cells: rotatedCells };
+  const connectedMaze = checkConnections(rotatedMaze);
+
   return (
     <div className={cn.game}>
       <div className={cn.container}>
@@ -53,7 +63,7 @@ const Game = () => {
           </div>
         </div>
         <div className={cn.playArea}>
-          <Grid />
+          <Grid maze={connectedMaze} />
         </div>
       </div>
     </div>

@@ -1,6 +1,8 @@
 import React from 'react';
 import { css } from 'astroturf';
 
+import { flags, directionFlags } from 'helpers/maze';
+
 const cn = css`
   .cell {
     position: relative;
@@ -9,6 +11,9 @@ const cn = css`
   }
   .cell > * {
     position: absolute;
+    background-color: var(--dark-gray);
+  }
+  .visited > * {
     background-color: var(--blue);
   }
   .start {
@@ -64,27 +69,35 @@ const cn = css`
 `;
 
 interface Props {
-  shape: number;
+  cell: number;
   onClick: () => void;
 }
 
-const mapShape = (shape: number) => {
+const mapCell = (cell: number) => {
   return {
-    top: !!(shape & 0x1),
-    right: !!(shape & 0x2),
-    bottom: !!(shape & 0x4),
-    left: !!(shape & 0x8),
-    start: !!(shape & 0x10),
+    top: !!(cell & flags.top),
+    right: !!(cell & flags.right),
+    bottom: !!(cell & flags.bottom),
+    left: !!(cell & flags.left),
+    start: !!(cell & flags.start),
+    visited: !!(cell & flags.visited),
   };
 };
 
-const Cell = ({ shape, onClick }: Props) => {
-  const { top, right, bottom, left, start } = mapShape(shape);
+const Tile = ({ cell, onClick }: Props) => {
+  const { top, right, bottom, left, start, visited } = mapCell(cell);
 
-  const end = shape === 1 || shape === 2 || shape === 4 || shape === 8;
+  const end =
+    (cell & directionFlags) === flags.top ||
+    (cell & directionFlags) === flags.right ||
+    (cell & directionFlags) === flags.bottom ||
+    (cell & directionFlags) === flags.left;
 
   return (
-    <div className={cn.cell} onClick={onClick}>
+    <div
+      className={[cn.cell, visited && cn.visited].filter(Boolean).join(' ')}
+      onClick={onClick}
+    >
       {start && <div className={[cn.circle, cn.start].join(' ')} />}
       {end && <div className={[cn.circle, cn.end].join(' ')} />}
       {top && <div className={[cn.path, cn.pathTop].join(' ')} />}
@@ -95,4 +108,4 @@ const Cell = ({ shape, onClick }: Props) => {
   );
 };
 
-export default Cell;
+export default Tile;
