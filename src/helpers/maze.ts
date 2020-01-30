@@ -7,6 +7,7 @@ export const flags = {
   left: 0b1000,
   start: 0b10000,
   visited: 0b100000,
+  rotating: 0b1000000,
 };
 
 export const directionFlags = 0b1111;

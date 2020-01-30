@@ -35,6 +35,7 @@ const unvisitedConnectionFn = (rows: number, columns: number) => (
   const neighbors = getNeighbors(rows, columns, position);
   const unvisited = neighbors.filter(
     neighbor =>
+      !(getCellValue(neighbor) & flags.rotating) &&
       isConnection(position, neighbor) &&
       !(getCellValue(neighbor) & flags.visited),
   );
