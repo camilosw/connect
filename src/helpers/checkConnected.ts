@@ -51,7 +51,8 @@ export default (maze: Maze) => {
 
   while (visited.length) {
     const currentPosition = visited[visited.length - 1];
-    cells[currentPosition.x + currentPosition.y * maze.rows] |= flags.visited;
+    cells[currentPosition.x + currentPosition.y * maze.columns] |=
+      flags.visited;
 
     const nextPosition = getUnvisitedConnection(currentPosition, cells);
     if (nextPosition) {

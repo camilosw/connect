@@ -6,6 +6,7 @@ import generateMaze from 'helpers/generateMaze';
 import randomInt from 'helpers/randomInt';
 import rotateCell from 'helpers/rotateCell';
 import checkConnections from 'helpers/checkConnected';
+import { useParams, useHistory } from 'react-router-dom';
 
 const cn = css`
   .game {
@@ -44,7 +45,25 @@ const cn = css`
 `;
 
 const Game = () => {
-  const maze = generateMaze(6, 6);
+  const { size } = useParams<{ size: string }>();
+  const history = useHistory();
+
+  const sizes = size.split('-');
+
+  if (sizes.length !== 2) {
+    history.replace('/');
+    return null;
+  }
+
+  const [rowsString, colsString] = sizes;
+  const rows = Number(rowsString);
+  const cols = Number(colsString);
+  if (!Number.isInteger(rows) || !Number.isInteger(cols)) {
+    history.replace('/');
+    return null;
+  }
+
+  const maze = generateMaze(rows, cols);
   const rotatedCells = maze.cells.map(cell => rotateCell(cell, randomInt(4)));
   const rotatedMaze = { ...maze, cells: rotatedCells };
   const connectedMaze = checkConnections(rotatedMaze);

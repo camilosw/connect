@@ -48,13 +48,13 @@ const cn = css`
 interface Props {
   title: string;
   cells?: number;
+  rows: number;
+  cols: number;
 }
 
-const Level = ({ title }: Props) => {
-  const slug = title.toLowerCase().replace(/\s/g, '-');
-
+const Level = ({ title, rows, cols }: Props) => {
   return (
-    <Link to={`/game/${slug}`} className={cn.level}>
+    <Link to={`/game/${rows}-${cols}`} className={cn.level}>
       <h2>{title}</h2>
 
       <div className={cn.score}>

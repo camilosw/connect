@@ -10,7 +10,6 @@ import { directionFlags, statusFlags, flags } from 'helpers/maze';
 const cn = css`
   .grid {
     display: grid;
-    grid-template-columns: 3rem 3rem 3rem 3rem 3rem 3rem;
   }
 `;
 
@@ -62,6 +61,10 @@ const reducer = (state: Maze, action: Action): Maze => {
 const Grid = ({ maze }: Props) => {
   const [mazeState, dispatch] = useReducer(reducer, maze);
 
+  const columnsStyle = Array(maze.columns)
+    .fill('3rem')
+    .join(' ');
+
   const handleTouch = (index: number) => {
     dispatch({ type: 'START_ROTATION', index });
   };
@@ -71,7 +74,7 @@ const Grid = ({ maze }: Props) => {
   };
 
   return (
-    <div className={cn.grid}>
+    <div className={cn.grid} style={{ gridTemplateColumns: columnsStyle }}>
       {mazeState.cells.map((cell, index) => (
         <Tile
           cell={cell}

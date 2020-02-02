@@ -69,7 +69,7 @@ export default (rows: number, columns: number): Maze => {
     }
   }
 
-  const start = { x: randomInt(rows), y: randomInt(columns) };
+  const start = { x: randomInt(columns), y: randomInt(rows) };
   cells[start.x + start.y * columns] |= flags.start;
 
   return {

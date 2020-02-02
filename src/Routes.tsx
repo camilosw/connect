@@ -9,7 +9,7 @@ const App = () => {
       <Route exact path="/">
         <Home />
       </Route>
-      <Route path="/game/:level">
+      <Route path="/game/:size">
         <Game />
       </Route>
     </Switch>
