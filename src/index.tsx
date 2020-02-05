@@ -6,6 +6,12 @@ import Header from 'components/Layout/Header';
 import Container from 'components/Layout/Container';
 import 'styles/index.css';
 
+if (process.env.NODE_ENV === 'development') {
+  // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
+  const whyDidYouRender = require('@welldone-software/why-did-you-render');
+  whyDidYouRender(React);
+}
+
 const App = () => (
   <Router>
     <Container>

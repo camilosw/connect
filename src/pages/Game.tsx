@@ -1,11 +1,6 @@
 import React from 'react';
-import Grid from 'components/Grid';
+import PlayGame from 'components/PlayGame';
 import { css } from 'astroturf';
-
-import generateMaze from 'helpers/generateMaze';
-import randomInt from 'helpers/randomInt';
-import rotateCell from 'helpers/rotateCell';
-import checkConnections from 'helpers/checkConnected';
 import { useParams, useHistory } from 'react-router-dom';
 
 const cn = css`
@@ -20,27 +15,6 @@ const cn = css`
     background-color: #fff;
     border-radius: 1.5rem;
     padding: 1.5rem;
-  }
-  .score {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    margin-bottom: 2rem;
-    text-align: center;
-    text-transform: uppercase;
-  }
-  .label {
-    opacity: 0.7;
-    margin-bottom: 0.5rem;
-  }
-  .value {
-    font-size: 1.75rem;
-  }
-  .playArea {
-    align-self: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
   }
 `;
 
@@ -63,27 +37,10 @@ const Game = () => {
     return null;
   }
 
-  const maze = generateMaze(rows, cols);
-  const rotatedCells = maze.cells.map(cell => rotateCell(cell, randomInt(4)));
-  const rotatedMaze = { ...maze, cells: rotatedCells };
-  const connectedMaze = checkConnections(rotatedMaze);
-
   return (
     <div className={cn.game}>
       <div className={cn.container}>
-        <div className={cn.score}>
-          <div>
-            <div className={cn.label}>Time</div>
-            <div className={cn.value}>00:00:00</div>
-          </div>
-          <div>
-            <div className={cn.label}>Taps</div>
-            <div className={cn.value}>4</div>
-          </div>
-        </div>
-        <div className={cn.playArea}>
-          <Grid maze={connectedMaze} />
-        </div>
+        <PlayGame rows={rows} cols={cols} />
       </div>
     </div>
   );

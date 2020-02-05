@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import Tile from 'components/Tile';
 import { css } from 'astroturf';
 
@@ -15,12 +15,25 @@ const cn = css`
 
 interface Props {
   maze: Maze;
+  onFinish(): void;
 }
 
-interface Action {
+interface State {
+  maze: Maze;
+  finished: boolean;
+}
+
+interface ActionRotation {
   type: 'START_ROTATION' | 'END_ROTATION';
   index: number;
 }
+
+interface ActionUpdateMaze {
+  type: 'UPDATE_MAZE';
+  maze: Maze;
+}
+
+type Action = ActionRotation | ActionUpdateMaze;
 
 const cellRotationStart = (index: number, maze: Maze) => {
   const changedCells = maze.cells.slice();
@@ -45,25 +58,40 @@ const cellRotationEnd = (index: number, maze: Maze) => {
   });
 };
 
-const reducer = (state: Maze, action: Action): Maze => {
+const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'START_ROTATION':
-      return cellRotationStart(action.index, state);
+      return { ...state, maze: cellRotationStart(action.index, state.maze) };
 
-    case 'END_ROTATION':
-      return cellRotationEnd(action.index, state);
+    case 'END_ROTATION': {
+      const maze = cellRotationEnd(action.index, state.maze);
+      const connected = maze.cells.filter(cell => cell & flags.visited).length;
+      const finished = connected === maze.cells.length;
+      return { finished, maze };
+    }
+
+    case 'UPDATE_MAZE':
+      return { ...state, maze: action.maze };
 
     default:
       return state;
   }
 };
 
-const Grid = ({ maze }: Props) => {
-  const [mazeState, dispatch] = useReducer(reducer, maze);
+const Grid = ({ maze, onFinish }: Props) => {
+  const [mazeState, dispatch] = useReducer(reducer, { maze, finished: false });
 
   const columnsStyle = Array(maze.columns)
     .fill('3rem')
     .join(' ');
+
+  useEffect(() => {
+    if (mazeState.finished) {
+      onFinish();
+    }
+  }, [mazeState.finished]);
+
+  useEffect(() => dispatch({ type: 'UPDATE_MAZE', maze }), [maze]);
 
   const handleTouch = (index: number) => {
     dispatch({ type: 'START_ROTATION', index });
@@ -75,7 +103,7 @@ const Grid = ({ maze }: Props) => {
 
   return (
     <div className={cn.grid} style={{ gridTemplateColumns: columnsStyle }}>
-      {mazeState.cells.map((cell, index) => (
+      {mazeState.maze.cells.map((cell, index) => (
         <Tile
           cell={cell}
           key={index}
