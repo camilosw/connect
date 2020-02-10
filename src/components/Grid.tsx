@@ -15,6 +15,7 @@ const cn = css`
 
 interface Props {
   maze: Maze;
+  onTouch(): void;
   onFinish(): void;
 }
 
@@ -78,7 +79,7 @@ const reducer = (state: State, action: Action): State => {
   }
 };
 
-const Grid = ({ maze, onFinish }: Props) => {
+const Grid = ({ maze, onTouch, onFinish }: Props) => {
   const [mazeState, dispatch] = useReducer(reducer, { maze, finished: false });
 
   const columnsStyle = Array(maze.columns)
@@ -95,6 +96,7 @@ const Grid = ({ maze, onFinish }: Props) => {
 
   const handleTouch = (index: number) => {
     dispatch({ type: 'START_ROTATION', index });
+    onTouch();
   };
 
   const handleRotationFinish = (index: number) => {

@@ -3,29 +3,14 @@ import Grid from 'components/Grid';
 import { css } from 'astroturf';
 
 import Button from 'components/Button';
+import GameScore from 'components/GameScore';
 import useGenerateGameMaze from 'hooks/useGenerateGameMaze';
+import usePlayScore from 'hooks/usePlayScore';
 
 const cn = css`
-  .score {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    margin-bottom: 2rem;
-    text-align: center;
-    text-transform: uppercase;
-  }
-  .label {
-    opacity: 0.7;
-    margin-bottom: 0.5rem;
-  }
-  .value {
-    font-size: 1.75rem;
-  }
   .playArea {
     position: relative;
-    align-self: center;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     margin-bottom: 1.5rem;
   }
@@ -57,6 +42,14 @@ interface Props {
 const PlayGame = ({ rows, cols }: Props) => {
   const [finish, setFinish] = useState(false);
   const [maze, updateMaze] = useGenerateGameMaze({ rows, cols });
+  const {
+    time,
+    taps,
+    stop: stopScore,
+    start: startScore,
+    tap,
+  } = usePlayScore();
+
   const didMount = useRef(false);
 
   useEffect(() => {
@@ -66,27 +59,34 @@ const PlayGame = ({ rows, cols }: Props) => {
     didMount.current = true;
   }, [finish, didMount]);
 
+  useEffect(() => startScore(), []);
+
+  const handleFinish = () => {
+    setFinish(true);
+    stopScore();
+  };
+
+  const handleRestart = () => {
+    setFinish(false);
+    startScore();
+  };
+
+  const handleOnTouch = () => {
+    tap();
+  };
+
   return (
     <>
-      <div className={cn.score}>
-        <div>
-          <div className={cn.label}>Time</div>
-          <div className={cn.value}>00:00:00</div>
-        </div>
-        <div>
-          <div className={cn.label}>Taps</div>
-          <div className={cn.value}>4</div>
-        </div>
-      </div>
+      <GameScore time={time} taps={taps} />
       <div className={cn.playArea}>
-        <Grid maze={maze} onFinish={() => setFinish(true)} />
+        <Grid maze={maze} onTouch={handleOnTouch} onFinish={handleFinish} />
         {finish && (
           <div className={cn.finishOverlay}>
             <div className={cn.actions}>
               <Button
                 variant="gray"
                 className={cn.buttonShadow}
-                onClick={() => setFinish(false)}
+                onClick={handleRestart}
               >
                 Play again
               </Button>
