@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Routes from 'Routes';
 import Header from 'components/Layout/Header';
 import Container from 'components/Layout/Container';
+import GlobalScoreProvider from './components/GlobalScoreProvider';
 import 'styles/index.css';
 
 if (process.env.NODE_ENV === 'development') {
@@ -13,12 +14,14 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const App = () => (
-  <Router>
-    <Container>
-      <Header />
-      <Routes />
-    </Container>
-  </Router>
+  <GlobalScoreProvider>
+    <Router>
+      <Container>
+        <Header />
+        <Routes />
+      </Container>
+    </Router>
+  </GlobalScoreProvider>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));

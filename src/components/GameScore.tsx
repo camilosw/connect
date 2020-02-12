@@ -1,5 +1,6 @@
 import React from 'react';
 import { css } from 'astroturf';
+import formatTime from 'helpers/formatTime';
 
 const cn = css`
   .score {
@@ -24,8 +25,6 @@ interface Props {
   time: number;
   taps: number;
 }
-
-const formatTime = (time: number) => new Date(time).toISOString().substr(14, 8);
 
 const GameScore = ({ time, taps }: Props) => {
   return (

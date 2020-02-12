@@ -6,6 +6,7 @@ import Button from 'components/Button';
 import GameScore from 'components/GameScore';
 import useGenerateGameMaze from 'hooks/useGenerateGameMaze';
 import usePlayScore from 'hooks/usePlayScore';
+import useGlobalScore from 'hooks/useGlobalScore';
 
 const cn = css`
   .playArea {
@@ -49,6 +50,7 @@ const PlayGame = ({ rows, cols }: Props) => {
     start: startScore,
     tap,
   } = usePlayScore();
+  const { saveScore } = useGlobalScore();
 
   const didMount = useRef(false);
 
@@ -61,7 +63,14 @@ const PlayGame = ({ rows, cols }: Props) => {
 
   useEffect(() => startScore(), []);
 
-  const handleFinish = () => {
+  useEffect(() => {
+    if (finish) {
+      const level = `${rows}x${cols}`;
+      saveScore(level, { time, taps });
+    }
+  }, [finish]);
+
+  const handleOnFinish = () => {
     setFinish(true);
     stopScore();
   };
@@ -79,7 +88,7 @@ const PlayGame = ({ rows, cols }: Props) => {
     <>
       <GameScore time={time} taps={taps} />
       <div className={cn.playArea}>
-        <Grid maze={maze} onTouch={handleOnTouch} onFinish={handleFinish} />
+        <Grid maze={maze} onTouch={handleOnTouch} onFinish={handleOnFinish} />
         {finish && (
           <div className={cn.finishOverlay}>
             <div className={cn.actions}>

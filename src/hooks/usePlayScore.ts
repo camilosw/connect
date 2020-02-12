@@ -1,38 +1,79 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useReducer } from 'react';
+
+interface State {
+  playing: boolean;
+  startTime: number;
+  time: number;
+  taps: number;
+}
+
+interface Action {
+  type: 'START' | 'TAP' | 'TIME' | 'STOP';
+}
+
+const reducer = (state: State, action: Action) => {
+  switch (action.type) {
+    case 'START':
+      return {
+        playing: true,
+        startTime: new Date().getTime(),
+        time: 0,
+        taps: 0,
+      };
+
+    case 'TAP':
+      return {
+        ...state,
+        taps: state.taps + 1,
+      };
+
+    case 'TIME': {
+      if (!state.playing) {
+        return state;
+      }
+      return {
+        ...state,
+        time: new Date().getTime() - state.startTime,
+      };
+    }
+
+    case 'STOP':
+      return {
+        ...state,
+        time: new Date().getTime() - state.startTime,
+        playing: false,
+      };
+
+    default:
+      return state;
+  }
+};
 
 const usePlayScore = () => {
-  const [playing, setPlaying] = useState(true);
-  const [taps, setTaps] = useState(0);
-  const [time, setTime] = useState(0);
-  const [startTime, setStartTime] = useState(0);
+  const [state, dispatch] = useReducer(reducer, {
+    playing: false,
+    startTime: 0,
+    time: 0,
+    taps: 0,
+  });
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (playing) {
+    if (state.playing) {
       const id = setInterval(() => {
-        setTime(new Date().getTime() - startTime);
+        dispatch({ type: 'TIME' });
       }, 53);
       return () => clearInterval(id);
     }
-  }, [playing, startTime]);
+  }, [state]);
 
-  const start = () => {
-    setTaps(0);
-    setTime(0);
-    setStartTime(new Date().getTime());
-    setPlaying(true);
-  };
-
-  const stop = () => {
-    setPlaying(false);
-    setTime(new Date().getTime() - startTime);
-  };
-
-  const tap = () => setTaps(t => t + 1);
+  const start = () => dispatch({ type: 'START' });
+  const stop = () => dispatch({ type: 'STOP' });
+  const tap = () => dispatch({ type: 'TAP' });
 
   return {
-    taps,
-    time,
+    taps: state.taps,
+    time: state.time,
     start,
     stop,
     tap,

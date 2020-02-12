@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { css } from 'astroturf';
+import useGlobalScore from 'hooks/useGlobalScore';
+import formatTime from 'helpers/formatTime';
 
 const cn = css`
   .level {
@@ -53,22 +55,29 @@ interface Props {
 }
 
 const Level = ({ title, rows, cols }: Props) => {
+  const { score } = useGlobalScore();
+
+  const level = `${rows}x${cols}`;
+  const levelScore = score.get(level);
+
   return (
     <Link to={`/game/${rows}-${cols}`} className={cn.level}>
       <h2>{title}</h2>
 
-      <div className={cn.score}>
-        <div className={cn.item}>
-          <div className={cn.label}>Last</div>
-          <div className={cn.value}>03:35</div>
-          <div className={cn.value}>15 taps</div>
+      {!!levelScore && (
+        <div className={cn.score}>
+          <div className={cn.item}>
+            <div className={cn.label}>Best</div>
+            <div className={cn.value}>{formatTime(levelScore.best.time)}</div>
+            <div className={cn.value}>{levelScore.best.taps} taps</div>
+          </div>
+          <div className={cn.item}>
+            <div className={cn.label}>Last</div>
+            <div className={cn.value}>{formatTime(levelScore.last.time)}</div>
+            <div className={cn.value}>{levelScore.last.taps} taps</div>
+          </div>
         </div>
-        <div className={cn.item}>
-          <div className={cn.label}>Best</div>
-          <div className={cn.value}>02:24</div>
-          <div className={cn.value}>12 taps</div>
-        </div>
-      </div>
+      )}
     </Link>
   );
 };
