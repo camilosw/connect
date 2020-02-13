@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { css } from 'astroturf';
-import useGlobalScore from 'hooks/useGlobalScore';
+import { useGlobalScore } from 'components/GlobalScoreProvider';
 import formatTime from 'helpers/formatTime';
 
 const cn = css`

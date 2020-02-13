@@ -6,7 +6,7 @@ import Button from 'components/Button';
 import GameScore from 'components/GameScore';
 import useGenerateGameMaze from 'hooks/useGenerateGameMaze';
 import usePlayScore from 'hooks/usePlayScore';
-import useGlobalScore from 'hooks/useGlobalScore';
+import { useGlobalScore } from 'components/GlobalScoreProvider';
 
 const cn = css`
   .playArea {
