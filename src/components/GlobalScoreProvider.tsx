@@ -1,4 +1,5 @@
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { createContext, useReducer, useContext, useEffect } from 'react';
+import persist from 'helpers/persist';
 
 interface Score {
   time: number;
@@ -10,7 +11,7 @@ interface ScoreRecord {
   last: Score;
 }
 
-type State = Map<string, ScoreRecord>;
+type State = Record<string, ScoreRecord>;
 
 interface SaveAction {
   type: 'SAVE';
@@ -30,12 +31,12 @@ interface Context {
   resetScore(): void;
 }
 
-export const initialValues = new Map<string, ScoreRecord>();
+const initialValues = persist.get('score') || {};
 
 const reducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'SAVE': {
-      const currentScore = state.get(action.level);
+      const currentScore = state[action.level];
       const bestScore = { ...action.score };
       if (currentScore) {
         if (currentScore.best.taps < action.score.taps) {
@@ -51,8 +52,10 @@ const reducer = (state: State, action: Action) => {
         best: bestScore,
       };
 
-      const storeClone = new Map(state);
-      return storeClone.set(action.level, newScore);
+      return {
+        ...state,
+        [action.level]: newScore,
+      };
     }
 
     case 'RESET':
@@ -79,6 +82,10 @@ const GlobalScoreProvider: React.FC = ({ children }) => {
   const resetScore = () => {
     dispatch({ type: 'RESET' });
   };
+
+  useEffect(() => {
+    persist.set('score', state);
+  }, [state]);
 
   const context = {
     score: state,

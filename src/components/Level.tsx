@@ -58,7 +58,7 @@ const Level = ({ title, rows, cols }: Props) => {
   const { score } = useGlobalScore();
 
   const level = `${rows}x${cols}`;
-  const levelScore = score.get(level);
+  const levelScore = score[level];
 
   return (
     <Link to={`/game/${rows}-${cols}`} className={cn.level}>
