@@ -1,5 +1,6 @@
-import React, { createContext, useReducer, useContext, useEffect } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import persist from 'helpers/persist';
+import createSafeContext from 'helpers/createSafeContext';
 
 interface Score {
   time: number;
@@ -66,11 +67,10 @@ const reducer = (state: State, action: Action) => {
   }
 };
 
-const GlobalScoreContext = createContext<Context>({
-  score: initialValues,
-  saveScore: () => undefined,
-  resetScore: () => undefined,
-});
+const [useGlobalScore, GlobalScoreContextProvider] = createSafeContext<
+  Context
+>();
+export { useGlobalScore };
 
 const GlobalScoreProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialValues);
@@ -94,14 +94,10 @@ const GlobalScoreProvider: React.FC = ({ children }) => {
   };
 
   return (
-    <GlobalScoreContext.Provider value={context}>
+    <GlobalScoreContextProvider value={context}>
       {children}
-    </GlobalScoreContext.Provider>
+    </GlobalScoreContextProvider>
   );
-};
-
-export const useGlobalScore = () => {
-  return useContext(GlobalScoreContext);
 };
 
 export default GlobalScoreProvider;
