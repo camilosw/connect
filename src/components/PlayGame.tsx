@@ -7,6 +7,7 @@ import GameScore from 'components/GameScore';
 import useGenerateGameMaze from 'hooks/useGenerateGameMaze';
 import usePlayScore from 'hooks/usePlayScore';
 import { useGlobalScore } from 'components/GlobalScoreProvider';
+import stats from 'helpers/stats';
 
 const cn = css`
   .playArea {
@@ -51,6 +52,7 @@ const PlayGame = ({ rows, cols }: Props) => {
     tap,
   } = usePlayScore();
   const { saveScore } = useGlobalScore();
+  const level = `${rows}x${cols}`;
 
   const didMount = useRef(false);
 
@@ -61,12 +63,15 @@ const PlayGame = ({ rows, cols }: Props) => {
     didMount.current = true;
   }, [finish, didMount]);
 
-  useEffect(() => startScore(), []);
+  useEffect(() => {
+    startScore();
+    stats.startGame(level);
+  }, []);
 
   useEffect(() => {
     if (finish) {
-      const level = `${rows}x${cols}`;
       saveScore(level, { time, taps });
+      stats.endGame(level);
     }
   }, [finish]);
 
@@ -78,6 +83,7 @@ const PlayGame = ({ rows, cols }: Props) => {
   const handleRestart = () => {
     setFinish(false);
     startScore();
+    stats.startGame(level);
   };
 
   const handleOnTouch = () => {

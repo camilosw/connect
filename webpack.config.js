@@ -1,16 +1,24 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const postCssImport = require('postcss-import');
-// const postCssFlexbugsFixes = require('postcss-flexbugs-fixes');
-// const postCssPresetEnv = require('postcss-preset-env');
-// const CssNano = require('cssnano');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const dotenv = require('dotenv');
 
 module.exports = (env, argv) => {
   const isDevelopment = argv.mode === 'development';
   const isProduction = argv.mode === 'production';
+
+  const envFile = dotenv.config().parsed;
+  const envs = {
+    'process.env': Object.keys(envFile).reduce((accum, item) => {
+      // eslint-disable-next-line no-param-reassign
+      accum[item] = JSON.stringify(envFile[item]);
+      return accum;
+    }, {}),
+  };
 
   return {
     devtool: isDevelopment ? 'cheap-module-eval-source-map' : 'source-map',
@@ -51,45 +59,12 @@ module.exports = (env, argv) => {
                 },
               },
             },
-            // {
-            //   loader: 'css-loader',
-            //   options: {
-            //     importLoaders: 1,
-            //     localsConvention: 'camelCase',
-            //     sourceMap: isDevelopment,
-            //     modules: {
-            //       mode: 'local',
-            //       localIdentName: isDevelopment
-            //         ? '[name]__[local]__[hash:base64]'
-            //         : '[hash:base64]',
-            //     },
-            //   },
-            // },
-            // {
-            //   loader: 'postcss-loader',
-            //   options: {
-            //     ident: 'postcss',
-            //     plugins: () => [
-            //       postCssImport(),
-            //       postCssFlexbugsFixes,
-            //       postCssPresetEnv({
-            //         autoprefixer: {
-            //           flexbox: 'no-2009',
-            //         },
-            //         stage: 3,
-            //         features: {
-            //           'custom-properties': true,
-            //         },
-            //       }),
-            //       CssNano(),
-            //     ],
-            //   },
-            // },
           ].filter(Boolean),
         },
       ],
     },
     plugins: [
+      new webpack.DefinePlugin(envs),
       isProduction && new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         template: 'public/index.html',
