@@ -1,11 +1,15 @@
-import React, { useReducer, useEffect } from 'react';
-import Tile from 'components/Tile';
+import React, { useEffect, useReducer } from 'react';
 import { css } from 'astroturf';
 
-import rotateCell from 'helpers/rotateCell';
-import { Maze } from 'types';
-import checkConnected from 'helpers/checkConnected';
-import { directionFlags, statusFlags, flags } from 'helpers/maze';
+import Tile from 'components/Tile';
+import {
+  checkConnected,
+  directionFlags,
+  flags,
+  Maze,
+  rotateCell,
+  statusFlags,
+} from 'services/maze';
 
 const cn = css`
   .grid {

@@ -1,7 +1,8 @@
 import React from 'react';
-import PlayGame from 'components/PlayGame';
+import { useHistory, useParams } from 'react-router-dom';
 import { css } from 'astroturf';
-import { useParams, useHistory } from 'react-router-dom';
+
+import PlayGame from 'components/PlayGame';
 
 const cn = css`
   .game {
@@ -18,7 +19,7 @@ const cn = css`
   }
 `;
 
-const Game = () => {
+const GameRoute = () => {
   const { size } = useParams<{ size: string }>();
   const history = useHistory();
 
@@ -46,4 +47,4 @@ const Game = () => {
   );
 };
 
-export default Game;
+export default GameRoute;

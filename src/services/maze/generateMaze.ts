@@ -1,6 +1,7 @@
-import randomInt from 'helpers/randomInt';
-import { Position, Maze } from 'types';
-import { getIndexFn, getCellValueFn, getNeighbors, flags } from 'helpers/maze';
+import { flags } from './flags';
+import { getCellValueFn, getIndexFn, getNeighbors } from './maze';
+import { randomInt } from './randomInt';
+import { Maze, Position } from './types';
 
 const randomizeList = <T>(list: T[]) =>
   list.slice().sort(() => Math.random() - 0.5);
@@ -43,7 +44,7 @@ const connectCells = (columns: number) => (
   }
 };
 
-export default (rows: number, columns: number): Maze => {
+export const generateMaze = (rows: number, columns: number): Maze => {
   const getUnvisitedNeighbor = unvisitedNeighbor(rows, columns);
   const makeCellConnection = connectCells(columns);
 

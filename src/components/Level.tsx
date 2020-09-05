@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { css } from 'astroturf';
+
 import { useGlobalScore } from 'components/GlobalScoreProvider';
-import formatTime from 'helpers/formatTime';
+import { formatTime } from 'services/format';
 
 const cn = css`
   .level {

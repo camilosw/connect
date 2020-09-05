@@ -1,7 +1,7 @@
-import React, { useState, memo } from 'react';
+import React, { memo, useState } from 'react';
 import { css } from 'astroturf';
 
-import { flags, directionFlags } from 'helpers/maze';
+import { directionFlags, flags } from 'services/maze';
 
 const cn = css`
   .cell {

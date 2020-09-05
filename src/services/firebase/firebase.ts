@@ -1,6 +1,6 @@
 import * as firebase from 'firebase/app';
+
 import 'firebase/analytics';
-import 'firebase/auth';
 
 firebase.initializeApp({
   apiKey: process.env.FIREBASE_API_KEY,
@@ -13,18 +13,4 @@ firebase.initializeApp({
   measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 });
 
-export const uiConfig = {
-  signInFlow: 'popup',
-  signInSuccessUrl: '/',
-  signInOptions: [
-    firebase.auth.EmailAuthProvider.PROVIDER_ID,
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-  ],
-  credentialHelper: 'none',
-  callbacks: {
-    signInSuccessWithAuthResult: () => false,
-  },
-};
-
 export const analytics = firebase.analytics();
-export const auth = firebase.auth();

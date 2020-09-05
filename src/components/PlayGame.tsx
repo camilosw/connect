@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Grid from 'components/Grid';
+import React, { useEffect, useRef, useState } from 'react';
 import { css } from 'astroturf';
 
 import Button from 'components/Button';
 import GameScore from 'components/GameScore';
-import useGenerateGameMaze from 'hooks/useGenerateGameMaze';
-import usePlayScore from 'hooks/usePlayScore';
 import { useGlobalScore } from 'components/GlobalScoreProvider';
-import stats from 'helpers/stats';
+import Grid from 'components/Grid';
+import { useGenerateGameMaze } from 'services/maze';
+import { usePlayScore } from 'services/score';
+import { stats } from 'services/stats';
 
 const cn = css`
   .playArea {

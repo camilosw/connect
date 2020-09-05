@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-export default <T>() => {
+export const createSafeContext = <T>() => {
   const context = createContext<T | undefined>(undefined);
   const useSafeContext = () => {
     const c = useContext(context);

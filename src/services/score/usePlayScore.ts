@@ -49,7 +49,7 @@ const reducer = (state: State, action: Action) => {
   }
 };
 
-const usePlayScore = () => {
+export const usePlayScore = () => {
   const [state, dispatch] = useReducer(reducer, {
     playing: false,
     startTime: 0,
@@ -79,5 +79,3 @@ const usePlayScore = () => {
     tap,
   };
 };
-
-export default usePlayScore;

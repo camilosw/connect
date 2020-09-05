@@ -20,7 +20,7 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint", "prettier"],
+  "plugins": ["react", "@typescript-eslint", "prettier", "simple-import-sort"],
   "rules": {
     "prettier/prettier": ["error"],
     "react/jsx-filename-extension": ["error", { "extensions": [".tsx"] }],
@@ -44,7 +44,24 @@
     "@typescript-eslint/no-explicit-any": "off",
     "arrow-body-style": "off",
     "no-bitwise": "off",
-    "no-debugger": "warn"
+    "no-debugger": "warn",
+    "simple-import-sort/sort": [
+      "error",
+      {
+        "groups": [
+          ["^react", "^@?\\w"],
+          [
+            "^(@|components|services|routes)(/.*|$)",
+            "^\\./(?=.*/)(?!/?$)",
+            "^\\.(?!/?$)",
+            "^\\./?$",
+            "^\\.\\.(?!/?$)",
+            "^\\.\\./?$",
+            "^.+\\.s?css$"
+          ]
+        ]
+      }
+    ]
   },
   "settings": {
     "import/resolver": {

@@ -4,8 +4,17 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
     "build": "webpack --mode production",
-    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "check-types": "tsc"
+    "lint": "tsc --noEmit && eslint --ignore-path .gitignore . --ext .js,.jsx,.ts,.tsx"
+  },
+  "hooks": {
+    "pre-commit": "lint-staged && tsc --noEmit && npm run build"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ]
   },
   "author": "Camilo Mejia",
   "license": "ISC",
@@ -34,16 +43,18 @@
     "eslint-plugin-prettier": "3.1.2",
     "eslint-plugin-react": "7.17.0",
     "eslint-plugin-react-hooks": "1.7.0",
+    "eslint-plugin-simple-import-sort": "^5.0.3",
     "firebase": "7.8.2",
     "fork-ts-checker-webpack-plugin": "3.1.1",
     "html-webpack-plugin": "3.2.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.3.0",
     "mini-css-extract-plugin": "0.9.0",
     "postcss": "7.0.25",
     "postcss-loader": "3.0.0",
     "prettier": "1.19.1",
     "react": "16.12.0",
     "react-dom": "16.12.0",
-    "react-firebaseui": "4.1.0",
     "react-router-dom": "5.1.2",
     "style-loader": "1.0.2",
     "typescript": "3.7.3",

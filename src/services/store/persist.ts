@@ -11,8 +11,4 @@ const remove = (key: string) => {
   window.localStorage.removeItem(key);
 };
 
-export default {
-  set,
-  get,
-  remove,
-};
+export const persist = { set, get, remove };

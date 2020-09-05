@@ -1,6 +1,7 @@
 import React from 'react';
 import { css } from 'astroturf';
-import formatTime from 'helpers/formatTime';
+
+import { formatTime } from 'services/format';
 
 const cn = css`
   .score {

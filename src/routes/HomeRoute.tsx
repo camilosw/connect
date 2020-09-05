@@ -1,6 +1,8 @@
 import React from 'react';
-import Level from 'components/Level';
 import { css } from 'astroturf';
+
+import Header from 'components/Layout/Header';
+import Level from 'components/Level';
 
 const cn = css`
   .home {
@@ -12,9 +14,10 @@ const cn = css`
   }
 `;
 
-const Home = () => {
+const HomeRoute = () => {
   return (
     <div className={cn.home}>
+      <Header />
       <Level title="Very small" rows={3} cols={3} />
       <Level title="Small" rows={4} cols={4} />
       <Level title="Medium" rows={5} cols={5} />
@@ -25,4 +28,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeRoute;

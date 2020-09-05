@@ -1,5 +1,6 @@
-import { Maze, Position } from 'types';
-import { getCellValueFn, getNeighbors, flags } from 'helpers/maze';
+import { flags } from './flags';
+import { getCellValueFn, getNeighbors } from './maze';
+import { Maze, Position } from './types';
 
 const isConnectionFn = (columns: number, cells: number[]) => (
   position1: Position,
@@ -43,7 +44,7 @@ const unvisitedConnectionFn = (rows: number, columns: number) => (
   return unvisited.length ? unvisited[0] : null;
 };
 
-export default (maze: Maze) => {
+export const checkConnected = (maze: Maze) => {
   const getUnvisitedConnection = unvisitedConnectionFn(maze.rows, maze.columns);
 
   const cells = maze.cells.map(cell => cell & (flags.visited - 1));

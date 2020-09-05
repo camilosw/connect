@@ -1,6 +1,6 @@
-import React, { useReducer, useEffect } from 'react';
-import persist from 'helpers/persist';
-import createSafeContext from 'helpers/createSafeContext';
+import React, { useEffect, useReducer } from 'react';
+
+import { createSafeContext, persist } from 'services/store';
 
 interface Score {
   time: number;
