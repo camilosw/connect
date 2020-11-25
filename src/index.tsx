@@ -2,9 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import GlobalScoreProvider from 'components/GlobalScoreProvider';
-import Container from 'components/Layout/Container';
 import RootRoute from 'routes/RootRoute';
+import { GlobalScoreProvider } from 'services/score';
 import 'styles/index.css';
 
 if (process.env.NODE_ENV === 'development') {
@@ -16,9 +15,7 @@ if (process.env.NODE_ENV === 'development') {
 const App = () => (
   <GlobalScoreProvider>
     <Router>
-      <Container>
-        <RootRoute />
-      </Container>
+      <RootRoute />
     </Router>
   </GlobalScoreProvider>
 );

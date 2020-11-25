@@ -2,22 +2,28 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { css } from 'astroturf';
 
-import { useGlobalScore } from 'components/GlobalScoreProvider';
 import { formatTime } from 'services/format';
+import { Score, useGlobalScore } from 'services/score';
 
 const cn = css`
   .level {
     display: block;
     border-radius: 1rem;
-    padding: 1.5rem;
-    padding-bottom: 1rem;
+    padding: 1rem;
+    padding-top: 0;
     margin-bottom: 1.5rem;
     background-color: #fff;
+    box-shadow: 0 4px #002159;
   }
   .level h2 {
     text-align: center;
-    margin-top: 0;
+    margin: 0rem -1rem 1rem;
+    padding: 0.5rem;
     text-transform: uppercase;
+    background-color: var(--blue);
+    color: #fff;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
   }
   a.level {
     text-decoration: none;
@@ -43,10 +49,28 @@ const cn = css`
     font-size: 1.25rem;
     margin: 0.25rem 0;
   }
-  .item:first-child {
-    /* border-right: 1px solid var(--gray); */
-  }
 `;
+
+interface ScoreValuesProps {
+  title: string;
+  score?: Score;
+}
+
+const ScoreValues = ({ title, score }: ScoreValuesProps) => {
+  return (
+    <div className={cn.item}>
+      <div className={cn.label}>{title}</div>
+      {score ? (
+        <>
+          <div className={cn.value}>{formatTime(score.time)}</div>
+          <div className={cn.value}>{score.taps} taps</div>
+        </>
+      ) : (
+        <div>-</div>
+      )}
+    </div>
+  );
+};
 
 interface Props {
   title: string;
@@ -59,26 +83,16 @@ const Level = ({ title, rows, cols }: Props) => {
   const { score } = useGlobalScore();
 
   const level = `${rows}x${cols}`;
-  const levelScore = score[level];
+  const { best, last } = score[level] || {};
 
   return (
     <Link to={`/game/${rows}-${cols}`} className={cn.level}>
       <h2>{title}</h2>
 
-      {!!levelScore && (
-        <div className={cn.score}>
-          <div className={cn.item}>
-            <div className={cn.label}>Best</div>
-            <div className={cn.value}>{formatTime(levelScore.best.time)}</div>
-            <div className={cn.value}>{levelScore.best.taps} taps</div>
-          </div>
-          <div className={cn.item}>
-            <div className={cn.label}>Last</div>
-            <div className={cn.value}>{formatTime(levelScore.last.time)}</div>
-            <div className={cn.value}>{levelScore.last.taps} taps</div>
-          </div>
-        </div>
-      )}
+      <div className={cn.score}>
+        <ScoreValues title="Best" score={best} />
+        <ScoreValues title="Last" score={last} />
+      </div>
     </Link>
   );
 };

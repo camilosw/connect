@@ -1,16 +1,7 @@
 import React, { useEffect, useReducer } from 'react';
 
 import { createSafeContext, persist } from 'services/store';
-
-interface Score {
-  time: number;
-  taps: number;
-}
-
-interface ScoreRecord {
-  best: Score;
-  last: Score;
-}
+import { Score, ScoreRecord } from './types';
 
 type State = Record<string, ScoreRecord>;
 
@@ -72,7 +63,7 @@ const [useGlobalScore, GlobalScoreContextProvider] = createSafeContext<
 >();
 export { useGlobalScore };
 
-const GlobalScoreProvider: React.FC = ({ children }) => {
+export const GlobalScoreProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialValues);
 
   const saveScore = (level: string, score: Score) => {
@@ -99,5 +90,3 @@ const GlobalScoreProvider: React.FC = ({ children }) => {
     </GlobalScoreContextProvider>
   );
 };
-
-export default GlobalScoreProvider;
