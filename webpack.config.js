@@ -43,6 +43,10 @@ module.exports = (env, argv) => {
           use: ['babel-loader', 'astroturf/loader', 'eslint-loader'],
         },
         {
+          test: /\.(png|svg|jpg|gif)$/,
+          use: ['file-loader'],
+        },
+        {
           test: /\.css$/,
           exclude: /node_modules/,
           use: [

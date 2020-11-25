@@ -67,15 +67,11 @@ export const usePlayScore = () => {
     }
   }, [state]);
 
-  const start = () => dispatch({ type: 'START' });
-  const stop = () => dispatch({ type: 'STOP' });
-  const tap = () => dispatch({ type: 'TAP' });
-
   return {
     taps: state.taps,
     time: state.time,
-    start,
-    stop,
-    tap,
+    start: () => dispatch({ type: 'START' }),
+    stop: () => dispatch({ type: 'STOP' }),
+    tap: () => dispatch({ type: 'TAP' }),
   };
 };

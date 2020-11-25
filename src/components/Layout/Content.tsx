@@ -2,11 +2,9 @@ import React from 'react';
 import { css } from 'astroturf';
 
 const cn = css`
-  .container {
-    display: flex;
-    justify-content: center;
-  }
   .content {
+    display: flex;
+    flex-direction: column;
     width: 24rem;
   }
 `;
@@ -16,11 +14,7 @@ interface Props {
 }
 
 const index = ({ children }: Props) => {
-  return (
-    <div className={cn.container}>
-      <div className={cn.content}>{children}</div>
-    </div>
-  );
+  return <div className={cn.content}>{children}</div>;
 };
 
 export default index;

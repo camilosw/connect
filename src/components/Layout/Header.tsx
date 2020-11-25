@@ -4,19 +4,20 @@ import { css } from 'astroturf';
 const cn = css`
   .header {
     text-align: center;
-    margin-top: 0.5rem;
-  }
-  .header h1 {
-    margin-bottom: 0;
+    background-color: var(--blue);
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+    color: #fff;
+    height: 3rem;
   }
 `;
 
-const Header = () => {
-  return (
-    <div className={cn.header}>
-      <h1>CONNECTRON</h1>
-    </div>
-  );
+interface Props {
+  children: React.ReactNode;
+}
+
+const Header = ({ children }: Props) => {
+  return <div className={cn.header}>{children}</div>;
 };
 
 export default Header;

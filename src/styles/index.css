@@ -2,13 +2,15 @@
 @import url('https://fonts.googleapis.com/css?family=Archivo:300,400,700&display=swap');
 
 :root {
-  --blue: #1225dc;
+  --blue-lighter: #e6f6ff;
+  --blue-light: #7cc4fa;
+  --blue: #03449e;
   --gray: #d8dfee;
-  --dark-gray: #2e2e41;
+  --dark-gray: #323f4b;
 }
 
 body {
-  background-color: var(--gray);
+  background-color: var(--blue-lighter);
   color: var(--dark-gray);
   font-family: 'Archivo', sans-serif;
 }

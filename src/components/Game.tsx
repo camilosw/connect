@@ -76,14 +76,14 @@ const reducer = (state: State, action: Action): State => {
     }
 
     case 'UPDATE_MAZE':
-      return { ...state, maze: action.maze };
+      return { ...state, finished: false, maze: action.maze };
 
     default:
       return state;
   }
 };
 
-const Grid = ({ maze, onTouch, onFinish }: Props) => {
+const Game = ({ maze, onTouch, onFinish }: Props) => {
   const [mazeState, dispatch] = useReducer(reducer, { maze, finished: false });
 
   const columnsStyle = Array(maze.columns)
@@ -112,6 +112,7 @@ const Grid = ({ maze, onTouch, onFinish }: Props) => {
       {mazeState.maze.cells.map((cell, index) => (
         <Tile
           cell={cell}
+          disableRotation={mazeState.finished}
           key={index}
           onTouch={() => handleTouch(index)}
           onRotationEnd={() => handleRotationFinish(index)}
@@ -121,4 +122,4 @@ const Grid = ({ maze, onTouch, onFinish }: Props) => {
   );
 };
 
-export default Grid;
+export default Game;
