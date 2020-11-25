@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { css } from 'astroturf';
 
 import Button from 'components/Button';
+import Game from 'components/Game';
 import GameScore from 'components/GameScore';
-import { useGlobalScore } from 'components/GlobalScoreProvider';
-import Grid from 'components/Grid';
-import { useGenerateGameMaze } from 'services/maze';
-import { usePlayScore } from 'services/score';
+import { MazeParams, useGenerateGameMaze } from 'services/maze';
+import { useGlobalScore, usePlayScore } from 'services/score';
 import { stats } from 'services/stats';
 
 const cn = css`
@@ -36,14 +35,8 @@ const cn = css`
   }
 `;
 
-interface Props {
-  rows: number;
-  cols: number;
-}
-
-const PlayGame = ({ rows, cols }: Props) => {
-  const [finish, setFinish] = useState(false);
-  const [maze, updateMaze] = useGenerateGameMaze({ rows, cols });
+const usePlayGame = ({ rows, cols }: MazeParams) => {
+  const [maze, createMaze] = useGenerateGameMaze({ rows, cols });
   const {
     time,
     taps,
@@ -52,62 +45,50 @@ const PlayGame = ({ rows, cols }: Props) => {
     tap,
   } = usePlayScore();
   const { saveScore } = useGlobalScore();
+
   const level = `${rows}x${cols}`;
 
-  const didMount = useRef(false);
-
-  useEffect(() => {
-    if (!finish && didMount.current) {
-      updateMaze();
-    }
-    didMount.current = true;
-  }, [finish, didMount]);
-
-  useEffect(() => {
-    startScore();
-    stats.startGame(level);
-  }, []);
-
-  useEffect(() => {
-    if (finish) {
-      saveScore(level, { time, taps });
-      stats.endGame(level);
-    }
-  }, [finish]);
-
-  const handleOnFinish = () => {
-    setFinish(true);
+  const start = () => {
     stopScore();
-  };
-
-  const handleRestart = () => {
-    setFinish(false);
+    createMaze();
     startScore();
     stats.startGame(level);
   };
 
-  const handleOnTouch = () => {
-    tap();
+  const stop = () => {
+    stopScore();
+    saveScore(level, { time, taps });
+    stats.endGame(level);
   };
+
+  return {
+    maze,
+    time,
+    taps,
+    start,
+    tap,
+    stop,
+  };
+};
+
+interface Props {
+  rows: number;
+  cols: number;
+}
+
+const PlayGame = ({ rows, cols }: Props) => {
+  const { maze, time, taps, start, stop, tap } = usePlayGame({ rows, cols });
+
+  useEffect(() => start(), []);
+
+  if (!maze) return null;
 
   return (
     <>
       <GameScore time={time} taps={taps} />
+      <Button onClick={start}>Restart</Button>
       <div className={cn.playArea}>
-        <Grid maze={maze} onTouch={handleOnTouch} onFinish={handleOnFinish} />
-        {finish && (
-          <div className={cn.finishOverlay}>
-            <div className={cn.actions}>
-              <Button
-                variant="gray"
-                className={cn.buttonShadow}
-                onClick={handleRestart}
-              >
-                Play again
-              </Button>
-            </div>
-          </div>
-        )}
+        <Game maze={maze} onTouch={tap} onFinish={stop} />
       </div>
     </>
   );

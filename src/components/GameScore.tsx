@@ -8,17 +8,15 @@ const cn = css`
     display: flex;
     justify-content: space-around;
     width: 100%;
-    min-width: 14rem;
-    margin-bottom: 2rem;
+    min-width: 10rem;
     text-align: center;
     text-transform: uppercase;
   }
   .label {
-    opacity: 0.7;
-    margin-bottom: 0.5rem;
+    color: var(--gray);
   }
   .value {
-    font-size: 1.75rem;
+    font-size: 1.25rem;
   }
 `;
 
@@ -31,9 +29,7 @@ const GameScore = ({ time, taps }: Props) => {
   return (
     <div className={cn.score}>
       <div>
-        <div className={cn.label} id="time">
-          Time
-        </div>
+        <div className={cn.label}>Time</div>
         <div className={cn.value}>{formatTime(time)}</div>
       </div>
       <div>

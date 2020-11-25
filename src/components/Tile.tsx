@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { useState } from 'react';
 import { css } from 'astroturf';
 
 import { directionFlags, flags } from 'services/maze';
@@ -74,6 +74,7 @@ const cn = css`
 
 interface Props {
   cell: number;
+  disableRotation: boolean;
   onTouch: () => void;
   onRotationEnd: () => void;
 }
@@ -89,7 +90,12 @@ const mapCell = (cell: number) => {
   };
 };
 
-const Tile = ({ cell, onTouch: onClick, onRotationEnd }: Props) => {
+const Tile = ({
+  cell,
+  disableRotation,
+  onTouch: onClick,
+  onRotationEnd,
+}: Props) => {
   const [rotating, setRotating] = useState(false);
   const { top, right, bottom, left, start, visited } = mapCell(cell);
 
@@ -100,7 +106,7 @@ const Tile = ({ cell, onTouch: onClick, onRotationEnd }: Props) => {
     (cell & directionFlags) === flags.left;
 
   const handleTouch = () => {
-    if (rotating) return;
+    if (rotating || disableRotation) return;
     onClick();
     setRotating(true);
   };
@@ -115,8 +121,9 @@ const Tile = ({ cell, onTouch: onClick, onRotationEnd }: Props) => {
       className={[cn.cell, visited && cn.visited, rotating && cn.rotating]
         .filter(Boolean)
         .join(' ')}
-      onMouseDown={handleTouch}
       onTouchStart={handleTouch}
+      onTouchEnd={e => e.preventDefault()}
+      onMouseDown={handleTouch}
       onTransitionEnd={handleTransitionEnd}
     >
       {start && <div className={[cn.circle, cn.start].join(' ')} />}
@@ -129,4 +136,4 @@ const Tile = ({ cell, onTouch: onClick, onRotationEnd }: Props) => {
   );
 };
 
-export default memo(Tile, (prev, next) => prev.cell === next.cell);
+export default Tile;
