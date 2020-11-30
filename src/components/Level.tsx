@@ -11,9 +11,9 @@ const cn = css`
     border-radius: 1rem;
     padding: 1rem;
     padding-top: 0;
-    margin-bottom: 1.5rem;
+    margin: 0 1rem 1.5rem;
     background-color: #fff;
-    box-shadow: 0 4px #002159;
+    box-shadow: 0 4px var(--blue-dark);
   }
   .level h2 {
     text-align: center;

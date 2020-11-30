@@ -25,6 +25,9 @@ const cn = css`
   }
   .end {
     --size: 1.25rem;
+    .visited > & {
+      box-shadow: 0 0 6px var(--blue);
+    }
   }
   .circle {
     --half: calc(var(--size) / 2);

@@ -9,6 +9,7 @@ const cn = css`
     margin-bottom: 2rem;
     color: #fff;
     height: 3rem;
+    box-shadow: 0 4px var(--blue-dark);
   }
 `;
 
